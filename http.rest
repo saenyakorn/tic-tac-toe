@@ -1,0 +1,27 @@
+POST http://localhost:3000/api/game/ai/train
+
+###
+POST http://localhost:3000/api/game/ai/respond
+Content-Type: application/json
+
+{
+  "aiState": {
+    "remaining": {
+      "level1": 3,
+      "level2": 2,
+      "level3": 1
+    }
+  },
+  "playerState": {
+    "remaining": {
+      "level1": 4,
+      "level2": 2,
+      "level3": 1
+    }
+  },
+  "board": [
+    [{ "player": "AI", "level": 1 }, { "player": "PLAYER", "level": 1 }, { "player": "PLAYER", "level": 1 }],
+    [null, null, null],
+    [{ "player": "AI", "level": 1 }, { "player": "PLAYER", "level": 1 }, null]
+  ]
+}
