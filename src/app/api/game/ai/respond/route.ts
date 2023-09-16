@@ -4,6 +4,6 @@ import { NextResponse } from 'next/server'
 
 export async function POST(request: Request): Promise<NextResponse> {
   const currentGameState = GameTableSchema.parse(await request.json())
-  const nextGameState = await gameService.aiResponse(currentGameState)
+  const nextGameState = await gameService.aiRespond(currentGameState)
   return NextResponse.json(nextGameState)
 }

@@ -198,7 +198,7 @@ class GameService {
     return true
   }
 
-  async aiResponse(game: GameTableSchema): Promise<GameTableSchema> {
+  async aiRespond(game: GameTableSchema): Promise<GameTableSchema> {
     const { move } = await this._minimax(game, Player.AI)
     const { board, aiState, playerState } = game
     if (!move) {
@@ -212,7 +212,7 @@ class GameService {
   create(): GameTableSchema {
     const initialState: PlayerState = {
       remaining: {
-        level1: 6,
+        level1: 5,
         level2: 2,
         level3: 1,
       },
