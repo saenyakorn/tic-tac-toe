@@ -4,17 +4,19 @@ import { BoardSchema, GameTableSchema, MoveSchema, Player, PlayerState } from '.
 import { deepClone } from '@/utils/deep-clone'
 import { checkWin } from '@/utils/check-win'
 import { prisma } from '../prisma'
+import { checkBoardFull } from '@/utils/check-board-full'
 
 const MAX_VALUE = 100
 type MinimaxReturn = { score: number; move: MoveSchema | null }
 
 class GameService {
-  private _checkBoardFull(board: BoardSchema) {
-    return board.every((row) => row.every((cell) => cell))
-  }
-
-  private _findPossibleMoves(board: BoardSchema, player: Player, state: PlayerState): MoveSchema[] {
+  private _findPossibleMoves(
+    _board: BoardSchema,
+    player: Player,
+    state: PlayerState
+  ): MoveSchema[] {
     const possibleMoves: MoveSchema[] = []
+    const board = deepClone(_board)
     // Find the possible moves
     for (let i = 0; i < board.length; i++) {
       for (let j = 0; j < board[i].length; j++) {
@@ -92,7 +94,7 @@ class GameService {
       if (checkWin(game.board, Player.PLAYER)) {
         response = { score: -MAX_VALUE + depth, move: null }
       }
-      if (this._checkBoardFull(game.board)) {
+      if (checkBoardFull(game.board)) {
         response = { score: 0, move: null }
       }
       if (response) {

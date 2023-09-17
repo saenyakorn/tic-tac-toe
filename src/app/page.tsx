@@ -1,3 +1,5 @@
+'use client'
+
 import { Button } from '@/components/button'
 import { Cell } from '@/components/cell'
 import { RadioButton } from '@/components/radio-button'
@@ -6,6 +8,7 @@ import { checkWin } from '@/utils/check-win'
 import { deepClone } from '@/utils/deep-clone'
 import { useMemo, useState } from 'react'
 import { fetcher } from './client'
+import { checkBoardFull } from '@/utils/check-board-full'
 
 export default function GamePage() {
   const [selectedLevel, setSelectedLevel] = useState<1 | 2 | 3>(1)
@@ -23,6 +26,7 @@ export default function GamePage() {
   const handleAiResponse = async (row: number, col: number) => {
     setAiThinking(true)
     const clonedGame = deepClone(game)
+
     if (!clonedGame) return
 
     const key = `level${selectedLevel}` as keyof GameTableSchema['playerState']['remaining']
@@ -37,12 +41,28 @@ export default function GamePage() {
       setAiThinking(false)
       return
     }
+    // Skip if cell is already occupied by AI with higher or same level
+    if (
+      clonedGame.board[row][col]?.player === 'AI' &&
+      clonedGame.board[row][col] !== null &&
+      clonedGame.board[row][col]!.level >= selectedLevel
+    ) {
+      setAiThinking(false)
+      return
+    }
 
     clonedGame.board[row][col] = { player: 'PLAYER', level: selectedLevel }
     clonedGame.playerState.remaining[key] -= 1
     setGame(clonedGame)
 
+    // Check if player won
     if (checkWin(clonedGame.board, 'PLAYER')) {
+      setAiThinking(false)
+      return
+    }
+
+    // Check if draw
+    if (checkBoardFull(clonedGame.board)) {
       setAiThinking(false)
       return
     }
