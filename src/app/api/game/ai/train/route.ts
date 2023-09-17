@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 
 export async function POST(): Promise<NextResponse> {
   new Promise((resolve) => {
-    // console.log("AI train started")
+    // console.log('AI train started')
     // gameService.aiTrain()
     resolve(true)
   })
