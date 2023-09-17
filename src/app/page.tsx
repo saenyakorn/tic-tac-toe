@@ -133,7 +133,7 @@ export default function GamePage() {
         </>
       )}
       <div className="flex items-center flex-col gap-2">
-        <h2 className="font-semibold">Choose Level</h2>
+        <h2 className="font-semibold">Choose Marker</h2>
         <div className="flex flex-col items-center justify-center">
           <RadioButton
             name="level"

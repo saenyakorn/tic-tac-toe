@@ -5,6 +5,7 @@ import { deepClone } from '@/utils/deep-clone'
 import { checkWin } from '@/utils/check-win'
 import { prisma } from '../prisma'
 import { checkBoardFull } from '@/utils/check-board-full'
+import { moveBoard } from '@/utils/move-board'
 
 const MAX_VALUE = 100
 type MinimaxReturn = { score: number; move: MoveSchema | null }
@@ -117,10 +118,7 @@ class GameService {
       let bestMove = possibleMoves[0]
       for (const move of possibleMoves) {
         // Make the move
-        const newBoard = deepClone(board)
-        newBoard[move.row][move.col] = { player: move.player, level: move.level }
-        const newAiState = deepClone(aiState)
-        newAiState.remaining[`level${move.level}` as keyof PlayerState['remaining']] -= 1
+        const { board: newBoard, state: newAiState } = moveBoard(board, move, aiState)
 
         // Find the best score
         const { score } = await this._minimax(
@@ -150,10 +148,7 @@ class GameService {
     let bestMove = possibleMoves[0]
     for (const move of possibleMoves) {
       // Make the move
-      const newBoard = deepClone(board)
-      newBoard[move.row][move.col] = { player: move.player, level: move.level }
-      const newPlayerState = deepClone(playerState)
-      newPlayerState.remaining[`level${move.level}` as keyof PlayerState['remaining']] -= 1
+      const { board: newBoard, state: newPlayerState } = moveBoard(board, move, playerState)
 
       // Find the best score
       const { score } = await this._minimax(
