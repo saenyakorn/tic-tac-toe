@@ -24,12 +24,15 @@ The Web application is built with [Next.js](https://nextjs.org/) and [Bun](https
    bun i
    ```
 
-3. Prepare the environment variables and database
+3. Prepare the environment variables, database, and code generation
 
    ```
    cp .env.sample .env
    # Prepare MySQL database
    docker compose up -d
+   bun prisma db push
+   # Prisma code generation
+   bun prisma generate
    ```
 
    > You can change the environment variables in `.env` file.

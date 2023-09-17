@@ -37,3 +37,4 @@ next-env.d.ts
 
 # Database
 postgres-data
+mysql

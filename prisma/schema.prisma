@@ -6,13 +6,13 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
 model PreTrained {
   id         String   @id
-  game       String
+  game       String   @db.VarChar(500)
   nextPlayer String
   score      Int
   move       String?

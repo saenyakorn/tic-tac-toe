@@ -180,16 +180,20 @@ class GameService {
   async aiTrain() {
     new Promise(async (resolve) => {
       const game = this.create()
+      const startTime = new Date()
+      console.log('Train Started', new Date())
       // AI start first
       {
         const { score } = await this._minimax(game, Player.AI)
-        console.log("AI's score:", score)
+        console.log("AI's score:", score, new Date())
       }
       // Player start first
       {
         const { score } = await this._minimax(game, Player.PLAYER)
-        console.log("Player's score:", score)
+        console.log("Player's score:", score, new Date())
       }
+      const endTime = new Date()
+      console.log('Duration', (endTime.getTime() - startTime.getTime()) / 1000, 'seconds')
       resolve(true)
     })
     return true
